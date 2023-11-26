@@ -10,7 +10,11 @@ namespace tgBot
     {
         static void Main(string[] args)
         {
+<<<<<<< HEAD
             var client = new TelegramBotClient(""); // api ключ телеграм бота -> Environment Variables надо куда-то прятать его
+=======
+            var client = new TelegramBotClient("enter here tgbotclient");
+>>>>>>> 57b39939777e791ac7ff412b5d17a0c977b14da6
             client.StartReceiving(Update, Error);
 
 
