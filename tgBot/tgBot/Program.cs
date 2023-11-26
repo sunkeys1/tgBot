@@ -10,7 +10,7 @@ namespace tgBot
     {
         static void Main(string[] args)
         {
-            var client = new TelegramBotClient("6560744117:AAEx-sDd9rS69-xoxGPPapuxklsuCFeoV2Y");
+            var client = new TelegramBotClient(""); // api ключ телеграм бота -> Environment Variables надо куда-то прятать его
             client.StartReceiving(Update, Error);
 
 
@@ -35,7 +35,7 @@ namespace tgBot
                 
             if (message.Text != null && message != null)
             {
-                if (message.Text.StartsWith("money") && message.Text.Trim().Length >= 9)
+                if (message.Text.StartsWith("money") && message.Text.Trim().Length >= 9) 
                 {
                     string input = message.Text.Substring(6, 3).ToUpper();
                     string[] currencies = new string[]
@@ -216,7 +216,7 @@ namespace tgBot
                     bool contains = currencies.Contains(input);
                     if (contains)
                     {
-                        // Отправляем запрос к API CurrencyLayer
+                        // API CurrencyLayer
                         string apiKey = "c7451465e942377ae04b744576cebcbc";
                         string url = $"http://api.currencylayer.com/live?access_key={apiKey}&currencies=RUB&source={input}&format=1";
 
@@ -244,7 +244,48 @@ namespace tgBot
                     }
 
                 }
-               
+
+                if (message.Text.StartsWith("/joke") && message.Text.Trim().Length >= 7) // 0 - 1368 /joke 1  >=7   https://v2.jokeapi.dev/joke/Any?idRange=33
+                {
+                    bool inputBool = int.TryParse(message.Text.Substring(6, message.Text.Length - 6), out int input);
+                    if(inputBool && input >= -319 && input <= 319)
+                    {
+                        string url = $"https://v2.jokeapi.dev/joke/Any?idRange={input}";
+                        TranslationClient translationClient = TranslationClient.CreateFromApiKey("AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw");
+                        using (HttpClient client = new HttpClient())
+                        {
+                            HttpResponseMessage response = await client.GetAsync(url);
+                            if (response.IsSuccessStatusCode)
+                            {
+                                string json = await response.Content.ReadAsStringAsync();
+                                var data = JsonSerializer.Deserialize<JsonElement>(json);
+
+                                if (data.GetProperty("type").ToString().Equals("twopart"))
+                                {
+                                    string joke = string.Concat($"{data.GetProperty("setup")}\n", data.GetProperty("delivery"));
+                                    string categoryId = string.Concat($"\nCategory: {data.GetProperty("category")}\t | \t", $"Id: {data.GetProperty("id")}");
+                                    TranslationResult translationResult = await translationClient.TranslateTextAsync(joke, LanguageCodes.Russian);
+                                    string translated = translationResult.TranslatedText;
+                                    string finallyJoke = string.Concat($"{joke}\n\n", translated, categoryId);
+                                    await botClient.SendTextMessageAsync(message.Chat.Id, finallyJoke);
+                                }
+                                else
+                                {
+                                    string joke = data.GetProperty("joke").ToString();
+                                    string categoryId = string.Concat($"\nCategory: {data.GetProperty("category")}\t | \t", $"Id: {data.GetProperty("id")}");
+                                    TranslationResult translationResult = await translationClient.TranslateTextAsync(joke, LanguageCodes.Russian);
+                                    string translated = translationResult.TranslatedText;
+                                    string finallyJoke = string.Concat($"{joke}\n\n", translated, categoryId);
+                                    await botClient.SendTextMessageAsync(message.Chat.Id, $"{finallyJoke}");
+
+                                }
+
+                            }
+                        }
+                    }
+                    
+                }
+
                 Console.WriteLine($"{message.Chat.Username ?? "анон"}\t{message.Text}");
 
                 if (message.Text.ToLower().Contains("йо") || message.Text.ToLower().Contains("yo"))
@@ -296,9 +337,10 @@ namespace tgBot
                                 if (data.GetProperty("type").ToString().Equals("twopart"))
                                 {
                                     string joke = string.Concat($"{data.GetProperty("setup")}\n", data.GetProperty("delivery"));
+                                    string categoryId = string.Concat($"\nCategory: {data.GetProperty("category")}\t | \t", $"Id: {data.GetProperty("id")}");
                                     TranslationResult translationResult = await translationClient.TranslateTextAsync(joke, LanguageCodes.Russian);
                                     string translated = translationResult.TranslatedText;
-                                    string finallyJoke = string.Concat($"{joke}\n\n", translated);
+                                    string finallyJoke = string.Concat($"{joke}\n\n", translated, categoryId);
                                     await botClient.SendTextMessageAsync(message.Chat.Id, finallyJoke);
 
                                     //await botClient.SendTextMessageAsync(message.Chat.Id, $"{translated}");
@@ -307,9 +349,10 @@ namespace tgBot
                                 else
                                 {
                                     string joke = data.GetProperty("joke").ToString();
+                                    string categoryId = string.Concat($"\nCategory: {data.GetProperty("category")}\t | \t", $"Id: {data.GetProperty("id")}");
                                     TranslationResult translationResult = await translationClient.TranslateTextAsync(joke, LanguageCodes.Russian);
                                     string translated = translationResult.TranslatedText;
-                                    string finallyJoke = string.Concat($"{joke}\n\n", translated);
+                                    string finallyJoke = string.Concat($"{joke}\n\n", translated, categoryId);
                                     await botClient.SendTextMessageAsync(message.Chat.Id, $"{finallyJoke}");
 
                                 }
@@ -319,6 +362,7 @@ namespace tgBot
                             }
                         }
                         break;
+                    
 
 
                     default:
