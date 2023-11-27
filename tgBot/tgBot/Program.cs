@@ -10,33 +10,21 @@ namespace tgBot
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-            var client = new TelegramBotClient(""); // api ключ телеграм бота -> Environment Variables надо куда-то прятать его
-=======
-            var client = new TelegramBotClient("enter here tgbotclient");
->>>>>>> 57b39939777e791ac7ff412b5d17a0c977b14da6
+            var root = Directory.GetCurrentDirectory();
+            var dotenv = Path.Combine(root, ".env");
+            DotEnv.Load(dotenv);
+            
+            var client = new TelegramBotClient(Environment.GetEnvironmentVariable("tgbotapi")); // api ключ телеграм бота -> Environment Variables надо куда-то прятать его // tgbotapi
             client.StartReceiving(Update, Error);
 
-
-
+            
             Console.ReadLine();
         }
 
         async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
         {
             var message = update.Message;
-            //var chatId = message.Chat.Id;
-            Random rnd = new Random();
-            string[] cube = new string[] {
-                "CAACAgIAAxkBAAEKa8xlGBHedA1vrMFidRK-iqwVgB6xZgACixUAAu-iSEvcMCGEtWaZoDAE",
-                "CAACAgIAAxkBAAEKa85lGBH4edjfzy2p6s4OVTMtGprsRAACzxEAAlKRQEtOAAGmnvjK7y8wBA",
-                "CAACAgIAAxkBAAEKa9BlGBH6P4K9RnQHSg4q5VFSojHCfgACQBEAAiOsQUurmtw9CutR3zAE",
-                "CAACAgIAAxkBAAEKa9JlGBIV-39TLRR744ciGiwIRamCyQACcREAAuzsQUu1GqzW_T-jpDAE",
-                "CAACAgIAAxkBAAEKa9RlGBIX9UknnXxe4K7tlafVei2erAACoQ8AAkG1QUtuwcKEzQGhITAE",
-                "CAACAgIAAxkBAAEKa9ZlGBIYT21eAAGGM_z588evDyLfT6QAAvYNAAL3rUhLVg8sKkK3KGMwBA"
-            };
-            var concurList = "AED: United Arab Emirates Dirham\nAFN: Afghan Afghani\nALL: Albanian Lek\nAMD: Armenian Dram\nANG: Netherlands Antillean Guilder\nAOA: Angolan Kwanza\nARS: Argentine Peso\nAUD: Australian Dollar\nAWG: Aruban Florin\nAZN: Azerbaijani Manat\nBAM: Bosnia - Herzegovina Convertible Mark\nBBD: Barbadian Dollar\nBDT: Bangladeshi Taka\nBGN: Bulgarian Lev\nBHD: Bahraini Dinar\nBIF: Burundian Franc\nBMD: Bermudan Dollar\nBND: Brunei Dollar\nBOB: Bolivian Boliviano\nBRL: Brazilian Real\nBSD: Bahamian Dollar\nBTC: Bitcoin\nBTN: Bhutanese Ngultrum\nBWP: Botswanan Pula\nBYN: New Belarusian Ruble\nBYR: Belarusian Ruble\nBZD: Belize Dollar\nCAD: Canadian Dollar\nCDF: Congolese Franc\nCHF: Swiss Franc\nCLF: Chilean Unit of Account(UF)\nCLP: Chilean Peso\nCNY: Chinese Yuan\nCOP: Colombian Peso\nCRC: Costa Rican Colón\nCUC: Cuban Convertible Peso\nCUP: Cuban Peso\nCVE: Cape Verdean Escudo\nCZK: Czech Republic Koruna\nDJF: Djiboutian Franc\nDKK: Danish Krone\nDOP: Dominican Peso\nDZD: Algerian Dinar\nEGP: Egyptian Pound\nERN: Eritrean Nakfa\nETB: Ethiopian Birr\nEUR: Euro\nFJD: Fijian Dollar\nFKP: Falkland Islands Pound\nGBP: British Pound Sterling\nGEL: Georgian Lari\nGGP: Guernsey Pound\nGHS: Ghanaian Cedi\nGIP: Gibraltar Pound\nGMD: Gambian Dalasi\nGNF: Guinean Franc\nGTQ: Guatemalan Quetzal\nGYD: Guyanaese Dollar\nHKD: Hong Kong Dollar\nHNL: Honduran Lempira\nHRK: Croatian Kuna\nHTG: Haitian Gourde\nHUF: Hungarian Forint\nIDR: Indonesian Rupiah\nILS: Israeli New Sheqel\nIMP: Manx pound\nINR: Indian Rupee\nIQD: Iraqi Dinar\nIRR: Iranian Rial\nISK: Icelandic Króna\nJEP: Jersey Pound\nJMD: Jamaican Dollar\nJOD: Jordanian Dinar\nJPY: Japanese Yen\nKES: Kenyan Shilling\nKGS: Kyrgystani Som\nKHR: Cambodian Riel\nKMF: Comorian Franc\nKPW: North Korean Won\nKRW: South Korean Won\nKWD: Kuwaiti Dinar\nKYD: Cayman Islands Dollar\nKZT: Kazakhstani Tenge\nLAK: Laotian Kip\nLBP: Lebanese Pound\nLKR: Sri Lankan Rupee\nLRD: Liberian Dollar\nLSL: Lesotho Loti\nLTL: Lithuanian Litas\nLVL: Latvian Lats\nLYD: Libyan Dinar\nMAD: Moroccan Dirham\nMDL: Moldovan Leu\nMGA: Malagasy Ariary\nMKD: Macedonian Denar\nMMK: Myanma Kyat\nMNT: Mongolian Tugrik\nMOP: Macanese Pataca\nMRO: Mauritanian Ouguiya\nMUR: Mauritian Rupee\nMVR: Maldivian Rufiyaa\nMWK: Malawian Kwacha\nMXN: Mexican Peso\nMYR: Malaysian Ringgit\nMZN: Mozambican Metical\nNAD: Namibian Dollar\nNGN: Nigerian Naira\nNIO: Nicaraguan Córdoba\nNOK: Norwegian Krone\nNPR: Nepalese Rupee\nNZD: New Zealand Dollar\nOMR: Omani Rial\nPAB: Panamanian Balboa\nPEN: Peruvian Nuevo Sol\nPGK: Papua New Guinean Kina\nPHP: Philippine Peso\nPKR: Pakistani Rupee\nPLN: Polish Zloty\nPYG: Paraguayan Guarani\nQAR: Qatari Rial\nRON: Romanian Leu\nRSD: Serbian Dinar\nRUB: Russian Ruble (This cannot be used for comparison relative to the ruble) \nRWF: Rwandan Franc\nSAR: Saudi Riyal\nSBD: Solomon Islands Dollar\nSCR: Seychellois Rupee\nSDG: Sudanese Pound\nSEK: Swedish Krona\nSGD: Singapore Dollar\nSHP: Saint Helena Pound\nSLE: Sierra Leonean Leone\nSLL: Sierra Leonean Leone\nSOS: Somali Shilling\nSRD: Surinamese Dollar\nSSP: South Sudanese Pound\nSTD: São Tomé and Príncipe Dobra\nSVC: Salvadoran Colón\nSYP: Syrian Pound\nSZL: Swazi Lilangeni\nTHB: Thai Baht\nTJS: Tajikistani Somoni\nTMT: Turkmenistani Manat\nTND: Tunisian Dinar\nTOP: Tongan Paʻanga\nTRY: Turkish Lira\nTTD: Trinidad and Tobago Dollar\nTWD: New Taiwan Dollar\nTZS: Tanzanian Shilling\nUAH: Ukrainian Hryvnia\nUGX: Ugandan Shilling\nUSD: United States Dollar\nUYU: Uruguayan Peso\nUZS: Uzbekistan Som\nVEF: Venezuelan Bolívar Fuerte\nVES: Sovereign Bolivar\nVND: Vietnamese Dong\nVUV: Vanuatu Vatu\nWST: Samoan Tala\nXAF: CFA Franc BEAC\nXAG: Silver(troy ounce)\nXAU: Gold(troy ounce)\nXCD: East Caribbean Dollar\nXDR: Special Drawing Rights\nXOF: CFA Franc BCEAO\nXPF: CFP Franc\nYER: Yemeni Rial\nZAR: South African Rand\nZMK: Zambian Kwacha(pre-2013)\nZMW: Zambian Kwacha\nZWL: Zimbabwean Dollar";
-                
+                                   
             if (message.Text != null && message != null)
             {
                 if (message.Text.StartsWith("money") && message.Text.Trim().Length >= 9) 
@@ -221,7 +209,7 @@ namespace tgBot
                     if (contains)
                     {
                         // API CurrencyLayer
-                        string apiKey = "c7451465e942377ae04b744576cebcbc";
+                        string apiKey = Environment.GetEnvironmentVariable("currencyapi"); // currencyapi  // 
                         string url = $"http://api.currencylayer.com/live?access_key={apiKey}&currencies=RUB&source={input}&format=1";
 
                         using (HttpClient client = new HttpClient())
@@ -255,7 +243,7 @@ namespace tgBot
                     if(inputBool && input >= -319 && input <= 319)
                     {
                         string url = $"https://v2.jokeapi.dev/joke/Any?idRange={input}";
-                        TranslationClient translationClient = TranslationClient.CreateFromApiKey("AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw");
+                        TranslationClient translationClient = TranslationClient.CreateFromApiKey(Environment.GetEnvironmentVariable("translateapi")); // translateapi 
                         using (HttpClient client = new HttpClient())
                         {
                             HttpResponseMessage response = await client.GetAsync(url);
@@ -307,8 +295,8 @@ namespace tgBot
                 switch (message.Text.ToLower())
                 {
                     case "рнд":
-                        int res = rnd.Next(0, 6);
-                        await botClient.SendStickerAsync(message.Chat.Id, InputFile.FromFileId(cube[res]));
+                        int res = Variables.rnd.Next(0, 6);
+                        await botClient.SendStickerAsync(message.Chat.Id, InputFile.FromFileId(Variables.cube[res]));
                         break;
 
                     case "rnd":
@@ -319,13 +307,13 @@ namespace tgBot
                         goto case "рнд";
 
                     case "/money_list":
-                        await botClient.SendTextMessageAsync(message.Chat.Id, concurList);
+                        await botClient.SendTextMessageAsync(message.Chat.Id, Variables.concurList);
                         break;
 
 
                     case "/joke":
                         string url = $"https://v2.jokeapi.dev/joke/Any";
-                        TranslationClient translationClient = TranslationClient.CreateFromApiKey("AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw");
+                        TranslationClient translationClient = TranslationClient.CreateFromApiKey(Environment.GetEnvironmentVariable("translateapi"));
                         //string textToTranslate = "how is going on boys?";
                         //string url = $"http://translate.google.ru/translate_a/t?client=x&text=howisgoingguys&hl=en&sl=en&tl=ru";
                         using (HttpClient client = new HttpClient())
@@ -337,7 +325,7 @@ namespace tgBot
                                 var data = JsonSerializer.Deserialize<JsonElement>(json);
                                 
 
-                                // AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw - api ключ для гугл переводчика
+                                // 
                                 if (data.GetProperty("type").ToString().Equals("twopart"))
                                 {
                                     string joke = string.Concat($"{data.GetProperty("setup")}\n", data.GetProperty("delivery"));
@@ -381,6 +369,20 @@ namespace tgBot
         {
             throw new NotImplementedException();
         }
+    }
+    public class Variables
+    {
+        public static Random rnd = new Random();
+        public static string[] cube = new string[] {
+                "CAACAgIAAxkBAAEKa8xlGBHedA1vrMFidRK-iqwVgB6xZgACixUAAu-iSEvcMCGEtWaZoDAE",
+                "CAACAgIAAxkBAAEKa85lGBH4edjfzy2p6s4OVTMtGprsRAACzxEAAlKRQEtOAAGmnvjK7y8wBA",
+                "CAACAgIAAxkBAAEKa9BlGBH6P4K9RnQHSg4q5VFSojHCfgACQBEAAiOsQUurmtw9CutR3zAE",
+                "CAACAgIAAxkBAAEKa9JlGBIV-39TLRR744ciGiwIRamCyQACcREAAuzsQUu1GqzW_T-jpDAE",
+                "CAACAgIAAxkBAAEKa9RlGBIX9UknnXxe4K7tlafVei2erAACoQ8AAkG1QUtuwcKEzQGhITAE",
+                "CAACAgIAAxkBAAEKa9ZlGBIYT21eAAGGM_z588evDyLfT6QAAvYNAAL3rUhLVg8sKkK3KGMwBA"
+            };
+        public static string concurList = "AED: United Arab Emirates Dirham\nAFN: Afghan Afghani\nALL: Albanian Lek\nAMD: Armenian Dram\nANG: Netherlands Antillean Guilder\nAOA: Angolan Kwanza\nARS: Argentine Peso\nAUD: Australian Dollar\nAWG: Aruban Florin\nAZN: Azerbaijani Manat\nBAM: Bosnia - Herzegovina Convertible Mark\nBBD: Barbadian Dollar\nBDT: Bangladeshi Taka\nBGN: Bulgarian Lev\nBHD: Bahraini Dinar\nBIF: Burundian Franc\nBMD: Bermudan Dollar\nBND: Brunei Dollar\nBOB: Bolivian Boliviano\nBRL: Brazilian Real\nBSD: Bahamian Dollar\nBTC: Bitcoin\nBTN: Bhutanese Ngultrum\nBWP: Botswanan Pula\nBYN: New Belarusian Ruble\nBYR: Belarusian Ruble\nBZD: Belize Dollar\nCAD: Canadian Dollar\nCDF: Congolese Franc\nCHF: Swiss Franc\nCLF: Chilean Unit of Account(UF)\nCLP: Chilean Peso\nCNY: Chinese Yuan\nCOP: Colombian Peso\nCRC: Costa Rican Colón\nCUC: Cuban Convertible Peso\nCUP: Cuban Peso\nCVE: Cape Verdean Escudo\nCZK: Czech Republic Koruna\nDJF: Djiboutian Franc\nDKK: Danish Krone\nDOP: Dominican Peso\nDZD: Algerian Dinar\nEGP: Egyptian Pound\nERN: Eritrean Nakfa\nETB: Ethiopian Birr\nEUR: Euro\nFJD: Fijian Dollar\nFKP: Falkland Islands Pound\nGBP: British Pound Sterling\nGEL: Georgian Lari\nGGP: Guernsey Pound\nGHS: Ghanaian Cedi\nGIP: Gibraltar Pound\nGMD: Gambian Dalasi\nGNF: Guinean Franc\nGTQ: Guatemalan Quetzal\nGYD: Guyanaese Dollar\nHKD: Hong Kong Dollar\nHNL: Honduran Lempira\nHRK: Croatian Kuna\nHTG: Haitian Gourde\nHUF: Hungarian Forint\nIDR: Indonesian Rupiah\nILS: Israeli New Sheqel\nIMP: Manx pound\nINR: Indian Rupee\nIQD: Iraqi Dinar\nIRR: Iranian Rial\nISK: Icelandic Króna\nJEP: Jersey Pound\nJMD: Jamaican Dollar\nJOD: Jordanian Dinar\nJPY: Japanese Yen\nKES: Kenyan Shilling\nKGS: Kyrgystani Som\nKHR: Cambodian Riel\nKMF: Comorian Franc\nKPW: North Korean Won\nKRW: South Korean Won\nKWD: Kuwaiti Dinar\nKYD: Cayman Islands Dollar\nKZT: Kazakhstani Tenge\nLAK: Laotian Kip\nLBP: Lebanese Pound\nLKR: Sri Lankan Rupee\nLRD: Liberian Dollar\nLSL: Lesotho Loti\nLTL: Lithuanian Litas\nLVL: Latvian Lats\nLYD: Libyan Dinar\nMAD: Moroccan Dirham\nMDL: Moldovan Leu\nMGA: Malagasy Ariary\nMKD: Macedonian Denar\nMMK: Myanma Kyat\nMNT: Mongolian Tugrik\nMOP: Macanese Pataca\nMRO: Mauritanian Ouguiya\nMUR: Mauritian Rupee\nMVR: Maldivian Rufiyaa\nMWK: Malawian Kwacha\nMXN: Mexican Peso\nMYR: Malaysian Ringgit\nMZN: Mozambican Metical\nNAD: Namibian Dollar\nNGN: Nigerian Naira\nNIO: Nicaraguan Córdoba\nNOK: Norwegian Krone\nNPR: Nepalese Rupee\nNZD: New Zealand Dollar\nOMR: Omani Rial\nPAB: Panamanian Balboa\nPEN: Peruvian Nuevo Sol\nPGK: Papua New Guinean Kina\nPHP: Philippine Peso\nPKR: Pakistani Rupee\nPLN: Polish Zloty\nPYG: Paraguayan Guarani\nQAR: Qatari Rial\nRON: Romanian Leu\nRSD: Serbian Dinar\nRUB: Russian Ruble (This cannot be used for comparison relative to the ruble) \nRWF: Rwandan Franc\nSAR: Saudi Riyal\nSBD: Solomon Islands Dollar\nSCR: Seychellois Rupee\nSDG: Sudanese Pound\nSEK: Swedish Krona\nSGD: Singapore Dollar\nSHP: Saint Helena Pound\nSLE: Sierra Leonean Leone\nSLL: Sierra Leonean Leone\nSOS: Somali Shilling\nSRD: Surinamese Dollar\nSSP: South Sudanese Pound\nSTD: São Tomé and Príncipe Dobra\nSVC: Salvadoran Colón\nSYP: Syrian Pound\nSZL: Swazi Lilangeni\nTHB: Thai Baht\nTJS: Tajikistani Somoni\nTMT: Turkmenistani Manat\nTND: Tunisian Dinar\nTOP: Tongan Paʻanga\nTRY: Turkish Lira\nTTD: Trinidad and Tobago Dollar\nTWD: New Taiwan Dollar\nTZS: Tanzanian Shilling\nUAH: Ukrainian Hryvnia\nUGX: Ugandan Shilling\nUSD: United States Dollar\nUYU: Uruguayan Peso\nUZS: Uzbekistan Som\nVEF: Venezuelan Bolívar Fuerte\nVES: Sovereign Bolivar\nVND: Vietnamese Dong\nVUV: Vanuatu Vatu\nWST: Samoan Tala\nXAF: CFA Franc BEAC\nXAG: Silver(troy ounce)\nXAU: Gold(troy ounce)\nXCD: East Caribbean Dollar\nXDR: Special Drawing Rights\nXOF: CFA Franc BCEAO\nXPF: CFP Franc\nYER: Yemeni Rial\nZAR: South African Rand\nZMK: Zambian Kwacha(pre-2013)\nZMW: Zambian Kwacha\nZWL: Zimbabwean Dollar";
+
     }
 }
 #region
