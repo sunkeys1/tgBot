@@ -11,7 +11,7 @@ namespace tgBot
         static void Main(string[] args)
         {
             var root = Directory.GetCurrentDirectory();
-            var dotenv = Path.Combine(root, ".env");
+            var dotenv = Path.Combine(root, @"..\..\..\.env"); //   ..\     - вернуться на уровень выше, тк у нас запуск идет из /bin/Debug/net6.0, а файл .env (должен ли?) лежит в корне с Program.cs
             DotEnv.Load(dotenv);
             
             var client = new TelegramBotClient(Environment.GetEnvironmentVariable("tgbotapi")); // api ключ телеграм бота -> Environment Variables надо куда-то прятать его // tgbotapi
@@ -237,7 +237,7 @@ namespace tgBot
 
                 }
 
-                if (message.Text.StartsWith("/joke") && message.Text.Trim().Length >= 7) // 0 - 1368 /joke 1  >=7   https://v2.jokeapi.dev/joke/Any?idRange=33
+                if (message.Text.StartsWith("/joke") && message.Text.Trim().Length >= 7) // 0 - 1368 /joke 1  >=7   https://v2.jokeapi.dev/joke/Any?idRange=33 // нифига тут не 1300+, без ошибки идут 0-319
                 {
                     bool inputBool = int.TryParse(message.Text.Substring(6, message.Text.Length - 6), out int input);
                     if(inputBool && input >= -319 && input <= 319)
@@ -287,7 +287,7 @@ namespace tgBot
                     //await botClient.SendAnimationAsync(chatId, InputFile.FromUri("https://tlgrm.eu/_/stickers/e4d/0d1/e4d0d1cd-3c66-46b7-9ac6-0b897a81320a/192/2.webp")); //
 
                     await botClient.SendStickerAsync(message.Chat.Id, InputFile.FromFileId("CAACAgQAAxkBAAEKa8plGA8n6Y7khNPYXCNegxsb3VcXzAACfwADS2nuEFTz5nJSOnrDMAQ")); // Я НАШЕЛ ЭТОООО УРААААААААА!!!!!
-
+                    // стикеры отправляем по айдишнику, айдишник стикера можно узнать Get Sticker Id бота в телеге
                     return;
                 }
                 
@@ -311,11 +311,9 @@ namespace tgBot
                         break;
 
 
-                    case "/joke":
+                    case "/joke": // логика в кейсе? ну такое себе?
                         string url = $"https://v2.jokeapi.dev/joke/Any";
                         TranslationClient translationClient = TranslationClient.CreateFromApiKey(Environment.GetEnvironmentVariable("translateapi"));
-                        //string textToTranslate = "how is going on boys?";
-                        //string url = $"http://translate.google.ru/translate_a/t?client=x&text=howisgoingguys&hl=en&sl=en&tl=ru";
                         using (HttpClient client = new HttpClient())
                         {
                             HttpResponseMessage response = await client.GetAsync(url);
@@ -335,8 +333,6 @@ namespace tgBot
                                     string finallyJoke = string.Concat($"{joke}\n\n", translated, categoryId);
                                     await botClient.SendTextMessageAsync(message.Chat.Id, finallyJoke);
 
-                                    //await botClient.SendTextMessageAsync(message.Chat.Id, $"{translated}");
-                                    //await botClient.SendTextMessageAsync(message.Chat.Id, joke);
                                 }
                                 else
                                 {
